@@ -4,12 +4,19 @@ require(['vs/editor/editor.main'], function() {
         value: '## MarkdownをHTMLに変換します\nここにmarkdownを入力してください',
         language: 'markdown'
     });
+
+    window.editor.onDidChangeModelContent(function() {
+        let markdown = window.editor.getValue();
+        convertMarkdown(markdown, "preview");
+    });
 });
 
-document.getElementById('preview-button').addEventListener('click', function() {
+window.onload = function(){
+    // ページ読み込み時に実行したい処理
     let markdown = window.editor.getValue();
     convertMarkdown(markdown, "preview");
-})
+}
+
 
 document.getElementById('html-button').addEventListener('click', function() {
     let markdown = window.editor.getValue();
