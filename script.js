@@ -7,26 +7,43 @@ require(['vs/editor/editor.main'], function() {
 
     window.editor.onDidChangeModelContent(function() {
         let markdown = window.editor.getValue();
-        convertMarkdown(markdown, "preview");
+        const button = document.getElementById('html-button');
+        if (button.textContent === 'HTML Code') {
+            convertMarkdown(markdown, "preview");
+        } else {
+            convertMarkdown(markdown, "html");
+        }
     });
-});
 
-window.onload = function(){
-    // ページ読み込み時に実行したい処理
     let markdown = window.editor.getValue();
     convertMarkdown(markdown, "preview");
-}
+});
+
+
 
 
 document.getElementById('html-button').addEventListener('click', function() {
-    let markdown = window.editor.getValue();
-    convertMarkdown(markdown, "html");
+    toggleView();
 }) 
 
 document.getElementById('download-button').addEventListener('click', function() {
     let markdown = window.editor.getValue();
     convertMarkdown(markdown, "download");
 }) 
+
+
+function toggleView() {
+    const button = document.getElementById('html-button');
+    let markdown = window.editor.getValue();
+    
+    if (button.textContent === 'HTML Code') {
+        button.textContent = 'Preview';
+        convertMarkdown(markdown, 'html');
+    } else {
+        button.textContent = 'HTML Code';
+        convertMarkdown(markdown, 'preview');
+    }
+}
 
 function convertMarkdown(markdown, outputOption) {
     fetch('convert.php', {
